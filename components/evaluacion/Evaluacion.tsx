@@ -25,15 +25,20 @@ const Evaluacion = (props: EvalProps) => {
     }
   };
 
+  const totalEstrellas = 5;
+
   return (
     <View style={styles.contenedor}>
-      {[...Array(5).keys()].map((posicion) => (
-        <React.Fragment key={posicion}>
-          {props.calificacion >= posicion + 1 && <StarFilled onClick={handleOnClick} posicion={posicion} />}
-          {props.calificacion === posicion + 0.5 && <StarHalf onClick={handleOnClick} posicion={posicion} />}
-          {props.calificacion < posicion + 0.5 && <StarEmpty onClick={handleOnClick} posicion={posicion} />}
-        </React.Fragment>
-      ))}
+      {Array.from({ length: totalEstrellas }, (_, index) => {
+        const posicion = index + 1;
+        return (
+          <React.Fragment key={index}>
+            {props.calificacion >= posicion && <StarFilled onClick={handleOnClick} posicion={index} />}
+            {props.calificacion === index + 0.5 && <StarHalf onClick={handleOnClick} posicion={index} />}
+            {props.calificacion < index + 0.5 && <StarEmpty onClick={handleOnClick} posicion={index} />}
+          </React.Fragment>
+        );
+      })}
     </View>
   );
 };
