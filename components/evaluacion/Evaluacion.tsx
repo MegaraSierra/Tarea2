@@ -1,66 +1,64 @@
+// Evaluacion.tsx
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { SvgUri } from "react-native-svg";
-import StarEmpty from "./StarEmpty";
-import StarFilled from "./StarFilled";
+import StarEmpty, { StarEmptyProps } from "./StarEmpty";
+import StarFilled, { StarFilledProps } from "./StarFilled";
+import StarHalf, { StarHalfProps } from "./StarHalf";
 
 export type EvalProps = {
-    calificacion: number;
-    onCalificacionChange: any,
-}
-
-export type StartProp = {
-    posicion:number;
-    onClick: any;
-}
+  calificacion: number;
+  onCalificacionChange: (valor: number) => void;
+};
 
 const Evaluacion = (props: EvalProps) => {
+  const handleOnClick = (posicion: number) => {
+    const nuevaCalificacion = calcularNuevaCalificacion(props.calificacion, posicion);
+    props.onCalificacionChange(nuevaCalificacion);
+  };
 
-    const handleOnClick = (posicion:number)=>{
-        props.onCalificacionChange(posicion+1)
+  const calcularNuevaCalificacion = (calificacionActual: number, posicion: number) => {
+    if (calificacionActual === posicion) {
+      return posicion + 0.5;
+    } else if (calificacionActual === posicion + 0.5) {
+      return posicion + 1;
+    } else {
+      return posicion;
     }
+  };
 
-    return (
-        <View style={styles.contenedor}>
-            {props.calificacion == 0 && (
-                <StarEmpty onClick={handleOnClick} posicion={0} />
-            )}
-            {props.calificacion >= 1 && (
-                <StarFilled onClick={handleOnClick} posicion={0} />
-            )}
-            {props.calificacion < 2 && (
-                <StarEmpty onClick={handleOnClick} posicion={1} />
-            )}
-            {props.calificacion >= 2 && (
-                <StarFilled onClick={handleOnClick} posicion={1} />
-            )}
-            {props.calificacion < 3 && (
-                <StarEmpty onClick={handleOnClick} posicion={2} />
-            )}
-            {props.calificacion >= 3 && (
-                <StarFilled onClick={handleOnClick} posicion={2} />
-            )}
-            {props.calificacion < 4 && (
-                <StarEmpty onClick={handleOnClick} posicion={3} />
-            )}
-            {props.calificacion >= 4 && (
-                <StarFilled onClick={handleOnClick} posicion={3} />
-            )}
-            {props.calificacion < 5 && (
-                <StarEmpty onClick={handleOnClick} posicion={4} />
-            )}
-            {props.calificacion >= 5 && (
-                <StarFilled onClick={handleOnClick} posicion={4} />
-            )}
-        </View>
-    );
+  return (
+    <View style={styles.contenedor}>
+      {[...Array(5).keys()].map((posicion) => (
+        <React.Fragment key={posicion}>
+          {props.calificacion >= posicion + 1 && <StarFilled onClick={handleOnClick} posicion={posicion} />}
+          {props.calificacion === posicion + 0.5 && <StarHalf onClick={handleOnClick} posicion={posicion} />}
+          {props.calificacion < posicion + 0.5 && <StarEmpty onClick={handleOnClick} posicion={posicion} />}
+        </React.Fragment>
+      ))}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    contenedor: {
-        display: 'flex',
-        flexDirection: 'row',
-    },
+  contenedor: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 });
 
 export default Evaluacion;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
