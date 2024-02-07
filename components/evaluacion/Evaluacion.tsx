@@ -1,4 +1,3 @@
-// Evaluacion.tsx
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import StarEmpty, { StarEmptyProps } from "./StarEmpty";
